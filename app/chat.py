@@ -56,7 +56,10 @@ Hard rules:
    if present); describe each price exactly as the page labels it (e.g. a clinic's listed price), never adding units
    such as "per session" that the page does not state. Lines starting with "Listing:" are self-contained cards for
    OTHER clinics or packages: each price belongs only to the title on the same line.
-10. Write in {language}. Keep it short and scannable: 1 short paragraph or a few bullets. Do not paste URLs in the answer text;
+10. Greetings, thanks and small talk (message type "greeting"): reply in one or two friendly sentences and say what you
+   can help with (ITC Immunity Therapy Center's treatment packages, prices, what is included, location). Never say
+   information is missing for a greeting. Use status "answered" and offer_quote false.
+11. Write in {language}. Keep it short and scannable: 1 short paragraph or a few bullets. Do not paste URLs in the answer text;
    sources are shown separately.
 
 Return JSON:
@@ -179,7 +182,8 @@ def answer(message, history=None):
         "status": status,
         "category": category,
         "language": language,
-        "offer_lead": bool(result.get("offer_quote")) or category == "booking",
+        # Offer the quote form only when it helps: booking requests, or questions the pages can't fully answer.
+        "offer_lead": category == "booking" or (category == "question" and status in ("partial", "not_in_content")),
         "show_disclaimer": category in ("question", "medical_advice") and status != "declined",
         "quote_url": config.QUOTE_URL,
     }
