@@ -3,7 +3,7 @@
 A small, reliable chatbot that answers visitor questions using **only** the 7 PlacidWay pages provided in the
 assessment, cites the page every answer comes from, and says "I don't know" instead of guessing.
 
-**Live demo:** LIVE_URL_PLACEHOLDER
+**Live demo:** https://placidway-knowledge-chatbot-chi.vercel.app
 
 ## What it does
 
