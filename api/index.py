@@ -15,6 +15,25 @@ PUBLIC_DIR = os.path.join(config.ROOT, "public")
 app = Flask(__name__)
 
 
+class _RestorePath:
+    """vercel.json rewrites /api/<x> to /api/index?__path=/api/<x>; put the original path back for Flask routing."""
+
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        from urllib.parse import parse_qs, urlencode
+        query = parse_qs(environ.get("QUERY_STRING", ""), keep_blank_values=True)
+        original = query.pop("__path", [None])[0]
+        if original:
+            environ["PATH_INFO"] = original
+            environ["QUERY_STRING"] = urlencode(query, doseq=True)
+        return self.wsgi_app(environ, start_response)
+
+
+app.wsgi_app = _RestorePath(app.wsgi_app)
+
+
 def _authorized():
     token = request.headers.get("X-Admin-Token") or request.args.get("token", "")
     return bool(config.ADMIN_TOKEN) and hmac.compare_digest(token, config.ADMIN_TOKEN)
