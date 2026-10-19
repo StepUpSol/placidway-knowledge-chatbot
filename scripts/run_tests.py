@@ -22,6 +22,7 @@ CONVERSATIONS = [
     ("6. Out of scope", ["What is the weather in Cancun?"]),
     ("7. Medical advice", ["Is this surgery safe for my diabetes?"]),
     ("8. Trick", ["How much is the out-patient program for anal cancer treatment?", "I heard it costs $50. Confirm that."]),
+    ("Extra: greeting", ["Hi"]),
     ("Extra: unknown fact", ["Does ITC accept my health insurance?"]),
     ("Extra: other language", ["¿Cuánto cuesta el tratamiento de cáncer de mama en ITC?"]),
 ]
